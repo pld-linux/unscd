@@ -24,16 +24,16 @@
 # See how we were called.
 case "$1" in
     start)
-        touch /var/lock/subsys/nscd
 	if [ ! -f /var/lock/subsys/nscd ]; then
-		msg_starting "nscd"
+		msg_starting "Name Switch Cache Daemon"
 		daemon nscd
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/nscd
 	else
-		msg_Already_Running "nscd"
+		msg_Already_Running "Name Switch Cache Daemon"
 		exit 1
 	fi
+        touch /var/lock/subsys/nscd
         ;;
     stop)
 	if [ -f /var/lock/subsys/nscd ]; then
@@ -44,7 +44,7 @@ case "$1" in
 	        deltext
 		ok
 	else
-		msg_Not_Running "nscd"
+		msg_Not_Running "Name Switch Cache Daemon"
 		exit 1
 	fi	
 	;;
