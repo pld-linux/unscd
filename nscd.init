@@ -34,7 +34,6 @@ case "$1" in
 		msg_already_running "Name Switch Cache Daemon"
 		exit 1
 	fi
-	touch /var/lock/subsys/nscd
 	;;
   stop)
 	if [ -f /var/lock/subsys/nscd ]; then
