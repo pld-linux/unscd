@@ -26,12 +26,12 @@ fi
 # See how we were called.
 case "$1" in
     start)
-        show Starting Name Switch Cache Daemon
+        msg_sarting "Name Switch Cache Daemon"
 	daemon nscd $secure
         touch /var/lock/subsys/nscd
 	;;
     stop)
-	show Stopping Name Switch Cache Daemon
+	msg_stopping "Name Switch Cache Daemon"
 	busy
 	/usr/sbin/nscd -K
         rm -f /var/lock/subsys/nscd
@@ -46,7 +46,7 @@ case "$1" in
         $0 start
         ;;
     *)
-	echo "Usage: $0 {start|stop|status|restart|reload}"
+	msg_Usage "$0 {start|stop|status|restart|reload}"
 	;;
 esac
 exit 0
