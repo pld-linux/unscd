@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # nscd:		Starts the Name Switch Cache Daemon
 #
