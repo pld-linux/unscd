@@ -18,18 +18,14 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+# Get sysconfig
+if [ -f /etc/sysconfig/nscd ]; then
+    . /etc/sysconfig/nscd
+fi
+  
 # See how we were called.
 case "$1" in
     start)
-	secure=""
-#	for table in passwd group
-#	do
-#		if egrep '^'$table':.*nisplus' /etc/nsswitch.conf >/dev/null
-#		then
-#			/usr/lib/nscd_nischeck $table ||
-#				secure="$secure -S $table,yes"
-#		fi
-#	done
         show Starting Name Switch Cache Daemon
 	daemon nscd $secure
         touch /var/lock/subsys/nscd
