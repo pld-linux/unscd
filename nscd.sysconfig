@@ -9,7 +9,7 @@
 #				secure="$secure -S $table,yes"
 #		fi
 #	done
-# Customized setings for utmpd
+# Customized settings for utmpd
 
 
 # Define nice level for nscd 
