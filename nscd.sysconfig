@@ -1,4 +1,4 @@
-# sysconfig for nscd
+# Customized settings for nscd
 
 	secure=""
 #	for table in passwd group
@@ -9,8 +9,6 @@
 #				secure="$secure -S $table,yes"
 #		fi
 #	done
-# Customized settings for utmpd
 
-
-# Define nice level for nscd 
+# Define nice level for nscd
 SERVICE_RUN_NICE_LEVEL="+0"
