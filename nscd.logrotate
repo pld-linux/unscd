@@ -1,4 +1,2 @@
 /var/log/nscd {
-    weekly
-    rotate 1
 }
