@@ -2,13 +2,13 @@
 #
 # nscd:		Starts the Name Switch Cache Daemon
 #
-# chkconfig: 345 30 80
-# description:  This is a daemon which handles passwd and group lookups \
+# chkconfig:	345 30 80
+# description:	This is a daemon which handles passwd and group lookups \
 #		for running programs and cache the results for the next \
-#		query.  You should start this daemon only if you use \
+#		query. You should start this daemon only if you use \
 #		slow Services like NIS or NIS+
-# processname: nscd
-# config: /etc/nscd.conf
+# processname:	nscd
+# config:	/etc/nscd.conf
 #
 
 # Sanity checks.
@@ -19,24 +19,34 @@
 . /etc/rc.d/init.d/functions
 
 # Get sysconfig
-if [ -f /etc/sysconfig/nscd ]; then
-    . /etc/sysconfig/nscd
-fi
+[ -f /etc/sysconfig/nscd ] && . /etc/sysconfig/nscd
   
 # See how we were called.
 case "$1" in
     start)
-        msg_sarting "Name Switch Cache Daemon"
-	daemon nscd $secure
         touch /var/lock/subsys/nscd
-	;;
+	if [ ! -f /var/lock/subsys/nscd ]; then
+		msg_starting "nscd"
+		daemon nscd
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/nscd
+	else
+		msg_Already_Running "nscd"
+		exit 1
+	fi
+        ;;
     stop)
-	msg_stopping "Name Switch Cache Daemon"
-	busy
-	/usr/sbin/nscd -K
-        rm -f /var/lock/subsys/nscd
-        deltext
-	ok
+	if [ -f /var/lock/subsys/nscd ]; then
+		msg_stopping "Name Switch Cache Daemon"
+		busy
+		/usr/sbin/nscd -K
+		rm -f /var/lock/subsys/nscd >/dev/null 2>&1
+	        deltext
+		ok
+	else
+		msg_Not_Running "nscd"
+		exit 1
+	fi	
 	;;
   status)
         status nscd
@@ -47,6 +57,8 @@ case "$1" in
         ;;
     *)
 	msg_Usage "$0 {start|stop|status|restart|reload}"
+	exit 1
 	;;
 esac
-exit 0
+
+exit $RETVAL
