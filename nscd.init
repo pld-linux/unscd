@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# nscd:		Starts the Name Switch Cache Daemon
+#
+# chkconfig: - 30 80
+# description:  This is a daemon which handles passwd and group lookups \
+#		for running programs and cache the results for the next \
+#		query.  You should start this daemon only if you use \
+#		slow Services like NIS or NIS+
+# processname: nscd
+# config: /etc/nscd.conf
+#
+
+# Sanity checks.
+[ -f /etc/nscd.conf ] || exit 0
+[ -x /usr/sbin/nscd ] || exit 0
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+    start)
+	secure=""
+#	for table in passwd group
+#	do
+#		if egrep '^'$table':.*nisplus' /etc/nsswitch.conf >/dev/null
+#		then
+#			/usr/lib/nscd_nischeck $table ||
+#				secure="$secure -S $table,yes"
+#		fi
+#	done
+        show Starting Name Switch Cache Daemon
+	daemon nscd $secure
+        touch /var/lock/subsys/nscd
+	;;
+    stop)
+	show Stopping Name Switch Cache Daemon
+	busy
+	/usr/sbin/nscd -K
+        rm -f /var/lock/subsys/nscd
+        deltext
+	ok
+	;;
+  status)
+        status nscd
+        ;;
+  restart|reload)
+        $0 stop
+        $0 start
+        ;;
+    *)
+	echo "Usage: $0 {start|stop|status|restart|reload}"
+	;;
+esac
+exit 0
