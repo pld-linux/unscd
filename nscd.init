@@ -2,7 +2,7 @@
 #
 # nscd:		Starts the Name Switch Cache Daemon
 #
-# chkconfig: - 30 80
+# chkconfig: 345 30 80
 # description:  This is a daemon which handles passwd and group lookups \
 #		for running programs and cache the results for the next \
 #		query.  You should start this daemon only if you use \
