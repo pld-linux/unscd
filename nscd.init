@@ -43,7 +43,7 @@ case "$1" in
 		ok
 	else
 		msg_not_running "Name Switch Cache Daemon"
-	fi	
+	fi
 	;;
   status)
 	status nscd
