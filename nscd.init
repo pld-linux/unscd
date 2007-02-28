@@ -58,10 +58,14 @@ case "$1" in
 	exit $?
 	;;
   reload)
-	for db in passwd group hosts; do
-		show "Invalidating %s cache" $db; busy
-		nscd -i $db && ok || fail
-	done
+	if [ -f /var/lock/subsys/nscd ]; then
+		for db in passwd group hosts; do
+			show "Invalidating %s cache" $db; busy
+			nscd -i $db && ok || fail
+		done
+	else
+		msg_not_running "Name Switch Cache Daemon"
+	fi
 	;;
   restart|force-reload)
 	stop
