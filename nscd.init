@@ -21,10 +21,7 @@
 # Get sysconfig
 [ -f /etc/sysconfig/nscd ] && . /etc/sysconfig/nscd
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	if [ ! -f /var/lock/subsys/nscd ]; then
 		msg_starting "Name Switch Cache Daemon"
 		daemon nscd
@@ -33,8 +30,9 @@ case "$1" in
 	else
 		msg_already_running "Name Switch Cache Daemon"
 	fi
-	;;
-  stop)
+}
+
+stop() {
 	if [ -f /var/lock/subsys/nscd ]; then
 		msg_stopping "Name Switch Cache Daemon"
 		busy
@@ -44,15 +42,24 @@ case "$1" in
 	else
 		msg_not_running "Name Switch Cache Daemon"
 	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
 	;;
   status)
 	status nscd
 	exit $?
 	;;
   restart|force-reload)
-	$0 stop
-	$0 start
-	exit $?
+	stop
+	start
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|force-reload|status}"
