@@ -57,12 +57,18 @@ case "$1" in
 	status nscd
 	exit $?
 	;;
+  reload)
+	for db in passwd group hosts; do
+		show "Invalidating %s cache" $db; busy
+		nscd -i $db && ok || fail
+	done
+	;;
   restart|force-reload)
 	stop
 	start
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
 	exit 3
 esac
 
