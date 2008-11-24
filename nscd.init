@@ -44,18 +44,34 @@ stop() {
 	fi
 }
 
+condrestart() {
+	if [ -f /var/lock/subsys/nscd ]; then
+		stop
+		start
+	else
+		msg_not_running "Name Switch Cache Daemon"
+		RETVAL=$1
+	fi
+}
+
 RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-  	start
+	start
 	;;
   stop)
-  	stop
+	stop
 	;;
-  status)
-	status nscd
-	exit $?
+  restart)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
 	;;
   reload)
 	if [ -f /var/lock/subsys/nscd ]; then
@@ -67,12 +83,12 @@ case "$1" in
 		msg_not_running "Name Switch Cache Daemon"
 	fi
 	;;
-  restart|force-reload)
-	stop
-	start
+  status)
+	status nscd
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
 	exit 3
 esac
 
