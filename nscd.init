@@ -13,7 +13,6 @@
 
 # Sanity checks.
 [ -f /etc/nscd.conf ] || exit 0
-[ -x /usr/sbin/nscd ] || exit 0
 
 # Source function library.
 . /etc/rc.d/init.d/functions
