@@ -23,7 +23,7 @@
 start() {
 	if [ ! -f /var/lock/subsys/nscd ]; then
 		msg_starting "Name Switch Cache Daemon"
-		daemon nscd
+		daemon /usr/sbin/nscd
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/nscd
 	else
