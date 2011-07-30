@@ -53,6 +53,15 @@ condrestart() {
 	fi
 }
 
+upstart_controlled --except reload
+
+# return true if service is considered "up"
+# with upstart, upstart is consulted
+# otherwise lockfile in subsys must exist
+is_service_up() {
+	use_upstart && is_upstart_running "$1" || [ -f /var/lock/subsys/"$1" ]
+}
+
 RETVAL=0
 # See how we were called.
 case "$1" in
@@ -73,7 +82,7 @@ case "$1" in
 	condrestart 7
 	;;
   reload)
-	if [ -f /var/lock/subsys/nscd ]; then
+	if is_service_up nscd; then
 		for db in passwd group hosts; do
 			show "Invalidating %s cache" $db; busy
 			nscd -i $db && ok || fail
