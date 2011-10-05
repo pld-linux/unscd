@@ -1,0 +1,10 @@
+description "Starts the Name Switch Cache Daemon"
+
+# as soon as /usr is mounted
+start on local-filesystems
+stop on pld.shutdown-started
+
+respawn
+
+expect daemon
+exec /usr/sbin/nscd
