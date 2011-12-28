@@ -16,12 +16,10 @@ performance with NIS+, and may help with DNS as well.
 
 %prep
 %setup -qcT
-cp -p %{SOURCE0} %{name}.c
-sed -ne '/Description:/,/\*\*\*/p' %{name}.c > README
+sed -ne '/Description:/,/\*\*\*/p' %{SOURCE0} > README
 
 %build
-%{__cc} -o %{name}.o %{rpmcflags} %{rpmcppflags} -Wall -Wunused-parameter -Os %{name}.c
-%{__cc} -o %{name} %{rpmldflags} -fomit-frame-pointer -Wl,--sort-section -Wl,alignment -Wl,--sort-common -Os %{name}.o
+%{__cc} -o %{name} %{rpmcflags} -Os %{rpmcppflags} %{rpmldflags} -Wall -Wunused-parameter -Wl,--sort-section -Wl,alignment -Wl,--sort-common %{SOURCE0}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,4 +32,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README
-%{_sbindir}/%{name}
+%attr(755,root,root) %{_sbindir}/%{name}
