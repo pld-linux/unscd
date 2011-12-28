@@ -11,7 +11,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Single threaded NSCD (Name Service Caching Daemon) implementation.
 
-%{name}.caches name service lookups; it can dramatically improve
+nscd caches name service lookups; it can dramatically improve
 performance with NIS+, and may help with DNS as well.
 
 %prep
