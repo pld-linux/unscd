@@ -35,7 +35,7 @@ stop() {
 	if [ -f /var/lock/subsys/nscd ]; then
 		msg_stopping "Name Switch Cache Daemon"
 		busy
-		/usr/sbin/nscd -K
+		/usr/sbin/nscd -K >/dev/null
 		rm -f /var/lock/subsys/nscd >/dev/null 2>&1
 		ok
 	else
@@ -85,7 +85,7 @@ case "$1" in
 	if is_service_up nscd; then
 		for db in passwd group hosts; do
 			show "Invalidating %s cache" $db; busy
-			nscd -i $db && ok || fail
+			nscd -i $db >/dev/null && ok || fail
 		done
 	else
 		msg_not_running "Name Switch Cache Daemon"
