@@ -1,11 +1,11 @@
 Summary:	Single threaded NSCD implementation
 Name:		unscd
-Version:	0.47
-Release:	0.2
+Version:	0.48
+Release:	0.1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
-# Source0-md5:	90af0b57648d2199209051f0d57ba286
+# Source0-md5:	d0e2ea863aa4f6724901c8fec24022b9
 Source1:	nscd.init
 Source2:	nscd.sysconfig
 Source3:	nscd.logrotate
