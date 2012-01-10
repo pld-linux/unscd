@@ -1,7 +1,7 @@
 Summary:	Single threaded NSCD implementation
 Name:		unscd
 Version:	0.48
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
