@@ -5,11 +5,13 @@ Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
-# Source0-md5:	d0e2ea863aa4f6724901c8fec24022b9
+# Source0-md5:	fc4d22da86fd82f3f17e570222a8cd5b
 Source1:	nscd.init
 Source2:	nscd.sysconfig
 Source3:	nscd.logrotate
 Source4:	nscd.conf
+Source5:	http://svn.donarmstrong.com/deb_pkgs/unscd/trunk/debian/nscd.8
+# Source5-md5:	eac364084cae21114174404790dfc0df
 URL:		http://busybox.net/~vda/unscd/
 Provides:	group(nscd)
 Requires(post):	fileutils
@@ -48,12 +50,13 @@ sed -ne '/Description:/,/\*\*\*/p' %{SOURCE0} > README
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/var/log,/var/run/nscd,/etc/{logrotate.d,rc.d/init.d,sysconfig}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/var/log,/var/run/nscd,/etc/{logrotate.d,rc.d/init.d,sysconfig}}
 install -p nscd $RPM_BUILD_ROOT%{_sbindir}
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/nscd
-cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/nscd
-cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/nscd
-cp -a %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
+cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/nscd
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/nscd
+cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
 : > $RPM_BUILD_ROOT/var/log/nscd
 
 %clean
@@ -92,6 +95,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/nscd.conf
 %attr(754,root,root) /etc/rc.d/init.d/nscd
 %attr(755,root,root) %{_sbindir}/nscd
+%{_mandir}/man8/nscd.8*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/nscd
 %attr(640,root,root) %ghost /var/log/nscd
 %dir /var/run/nscd
