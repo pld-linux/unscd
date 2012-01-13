@@ -1,4 +1,4 @@
-Summary:	Single threaded NSCD implementation
+Summary:	Single threaded NSCD (Name Service Caching Daemon)
 Name:		unscd
 Version:	0.48
 Release:	1
@@ -26,10 +26,18 @@ Obsoletes:	nscd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Single threaded NSCD (Name Service Caching Daemon) implementation.
+A daemon which handles passwd, group and host lookups for running
+programs and caches the results for the next query. You only need this
+package if you are using slow Name Services like LDAP, NIS or NIS+.
 
-nscd caches name service lookups; it can dramatically improve
-performance with NIS+, and may help with DNS as well.
+This particular NSCD is a complete rewrite of the GNU glibc nscd which
+is a single threaded server process which offloads all NSS lookups to
+worker children; cache hits are handled by the parent, and only cache
+misses start worker children, making the parent immune to resource
+leaks, hangs, and crashes in NSS libraries.
+
+It should mostly be a drop-in replacement for existing installs using
+nscd.
 
 %prep
 %setup -qcT
