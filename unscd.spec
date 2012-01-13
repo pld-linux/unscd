@@ -10,6 +10,7 @@ Source1:	nscd.init
 Source2:	nscd.sysconfig
 Source3:	nscd.logrotate
 Source4:	nscd.conf
+URL:		http://busybox.net/~vda/unscd/
 Provides:	group(nscd)
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
