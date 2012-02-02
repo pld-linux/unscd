@@ -1,7 +1,9 @@
+# FIXME
+%define	no_install_post_check_tmpfiles 1
 Summary:	Single threaded NSCD (Name Service Caching Daemon)
 Name:		unscd
 Version:	0.48
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
