@@ -21,36 +21,39 @@
 [ -f /etc/sysconfig/nscd ] && . /etc/sysconfig/nscd
 
 start() {
-	if [ ! -f /var/lock/subsys/nscd ]; then
-		msg_starting "Name Switch Cache Daemon"
-		daemon /usr/sbin/nscd
-		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/nscd
-	else
+	if [ -f /var/lock/subsys/nscd ]; then
 		msg_already_running "Name Switch Cache Daemon"
+		return
 	fi
+
+	msg_starting "Name Switch Cache Daemon"
+	daemon /usr/sbin/nscd
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/nscd
 }
 
 stop() {
-	if [ -f /var/lock/subsys/nscd ]; then
-		msg_stopping "Name Switch Cache Daemon"
-		busy
-		/usr/sbin/nscd -K >/dev/null
-		rm -f /var/lock/subsys/nscd >/dev/null 2>&1
-		ok
-	else
+	if [ ! -f /var/lock/subsys/nscd ]; then
 		msg_not_running "Name Switch Cache Daemon"
+		return
 	fi
+
+	msg_stopping "Name Switch Cache Daemon"
+	busy
+	/usr/sbin/nscd -K >/dev/null
+	rm -f /var/lock/subsys/nscd >/dev/null 2>&1
+	ok
 }
 
 condrestart() {
-	if [ -f /var/lock/subsys/nscd ]; then
-		stop
-		start
-	else
+	if [ ! -f /var/lock/subsys/nscd ]; then
 		msg_not_running "Name Switch Cache Daemon"
 		RETVAL=$1
+		return
 	fi
+
+	stop
+	start
 }
 
 # return true if service is considered "up"
