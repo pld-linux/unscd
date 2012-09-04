@@ -1,7 +1,7 @@
 Summary:	Single threaded NSCD (Name Service Caching Daemon)
 Name:		unscd
 Version:	0.48
-Release:	5
+Release:	6
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
@@ -14,6 +14,7 @@ Source5:	http://svn.donarmstrong.com/deb_pkgs/unscd/trunk/debian/nscd.8
 # Source5-md5:	eac364084cae21114174404790dfc0df
 Source6:	nscd.tmpfiles
 URL:		http://busybox.net/~vda/unscd/
+BuildRequires:	rpmbuild(macros) >= 1.644
 Provides:	group(nscd)
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
@@ -25,6 +26,7 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires:	rc-scripts >= 0.2.0
 Provides:	user(nscd)
+Obsoletes:	gnscd
 Obsoletes:	nscd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -54,14 +56,14 @@ sed -ne '/Description:/,/\*\*\*/p' %{SOURCE0} > README
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/var/log,/var/run/nscd,/etc/{logrotate.d,rc.d/init.d,sysconfig},/usr/lib/tmpfiles.d}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/var/log,/var/run/nscd,/etc/{logrotate.d,rc.d/init.d,sysconfig},%{systemdtmpfilesdir}}
 install -p nscd $RPM_BUILD_ROOT%{_sbindir}
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/nscd
 cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/nscd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/nscd
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
-cp -p %{SOURCE6} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/nscd.conf
+cp -p %{SOURCE6} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/nscd.conf
 : > $RPM_BUILD_ROOT/var/log/nscd
 
 %clean
@@ -103,5 +105,5 @@ fi
 %{_mandir}/man8/nscd.8*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/nscd
 %attr(640,root,root) %ghost /var/log/nscd
-/usr/lib/tmpfiles.d/nscd.conf
+%{systemdtmpfilesdir}/nscd.conf
 %dir /var/run/nscd
