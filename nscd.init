@@ -75,10 +75,7 @@ case "$1" in
   try-restart)
 	condrestart 0
 	;;
-  force-reload)
-	condrestart 7
-	;;
-  reload)
+  reload|force-reload)
 	if is_service_up nscd; then
 		for db in passwd group hosts; do
 			show "Invalidating %s cache" $db; busy
