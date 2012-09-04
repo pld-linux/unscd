@@ -49,15 +49,17 @@ nscd.
 
 %prep
 %setup -qcT
-sed -ne '/Description:/,/\*\*\*/p' %{SOURCE0} > README
+%{__sed} -ne '/Description:/,/\*\*\*/p' %{SOURCE0} > README
+
+%{__sed} -e '/#define DEBUG_BUILD/ s,^,// ,' %{SOURCE0} > %{name}.c
 
 %build
-%{__cc} -o nscd %{rpmcflags} -Os %{rpmcppflags} %{rpmldflags} -Wall -Wunused-parameter -Wl,--sort-section -Wl,alignment -Wl,--sort-common %{SOURCE0}
+%{__cc} -o %{name} %{rpmcflags} %{!?debug:-Os} %{rpmcppflags} -DDEBUG_BUILD=0%{?debug:1} %{rpmldflags} -Wall -Wunused-parameter -Wl,--sort-section -Wl,alignment -Wl,--sort-common %{name}.c
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/var/log,/var/run/nscd,/etc/{logrotate.d,rc.d/init.d,sysconfig},%{systemdtmpfilesdir}}
-install -p nscd $RPM_BUILD_ROOT%{_sbindir}
+install -p %{name} $RPM_BUILD_ROOT%{_sbindir}/nscd
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/nscd
 cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/nscd
