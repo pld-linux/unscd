@@ -1,11 +1,11 @@
 Summary:	Single threaded NSCD (Name Service Caching Daemon)
 Name:		unscd
-Version:	0.48
-Release:	6
+Version:	0.49
+Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
-# Source0-md5:	fc4d22da86fd82f3f17e570222a8cd5b
+# Source0-md5:	ee9cdaac340635e0c14551febbc0fd22
 Source1:	nscd.init
 Source2:	nscd.sysconfig
 Source3:	nscd.logrotate
