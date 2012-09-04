@@ -9,6 +9,7 @@
 #		slow Services like NIS or NIS+
 # processname:	nscd
 # config:	/etc/nscd.conf
+# pidfile:	/var/run/nscd/nscd.pid
 #
 
 # Sanity checks.
@@ -90,6 +91,7 @@ case "$1" in
 	;;
   status)
 	status nscd
+	status --pidfile /var/run/nscd/nscd.pid nscd
 	exit $?
 	;;
   *)
