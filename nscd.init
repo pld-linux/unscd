@@ -90,7 +90,6 @@ case "$1" in
 	fi
 	;;
   status)
-	status nscd
 	status --pidfile /var/run/nscd/nscd.pid nscd
 	exit $?
 	;;
