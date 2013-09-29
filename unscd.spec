@@ -1,7 +1,7 @@
 Summary:	Single threaded NSCD (Name Service Caching Daemon)
 Name:		unscd
 Version:	0.49
-Release:	4
+Release:	5
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://busybox.net/~vda/unscd/nscd-%{version}.c
@@ -31,7 +31,7 @@ Obsoletes:	nscd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # glibc private symbols
-%define		_noautoreq		libc.so.6(GLIBC_PRIVATE)
+%define		_noautoreq		GLIBC_PRIVATE
 
 %description
 A daemon which handles passwd, group and host lookups for running
